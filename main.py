@@ -1,28 +1,33 @@
-import os, playsound, random, time, threading
+import os, random, time, threading
+import playsound
+from multiprocessing import Process
 
-# paths = {
-#     "path_celesta": "D:/Dev/meditation_player/src/sounds/celesta/",
-#     "path_clav": "D:/Dev/meditation_player/src/sounds/clav/",
-#     "path_swells": "D:/Dev/meditation_player/src/sounds/swells/",
-# }
+
+dirname = os.path.dirname(__file__)
 paths = (
-    "D:/Dev/meditation_player/src/sounds/celesta/",
-    "D:/Dev/meditation_player/src/sounds/clav/",
-    "D:/Dev/meditation_player/src/sounds/swells/",
+    "\\src\\sounds\\celesta\\",
+    "\\src\\sounds\\clav\\",
+    "\\src\\sounds\\swells\\",
 )
 
-# print(os.path.join(path_celesta, "static_sounds_swells_swell1.mp3"))
+def player(sound):
+    playsound.playsound(sound)
 
-# def player(sound):
-#     playsound.playsound(sound)
-
-while 1:
+x = 1
+while x == 1:
     instrument = random.choice(paths)
     if 'swells' in instrument:
         sound_item = random.randint(1,3)
     else:
         sound_item = random.randint(1,27)
-    sound = f'{instrument}{sound_item}.mp3'
-    threading.Thread(target=playsound.playsound(sound)).start()
+    sound = dirname + instrument + str(sound_item) + '.mp3'
+    print(f'► {sound}')
+    # p = Process(target=player, args=(sound,))
+    # p = Process(target=playsound.playsound(sound), args=('bob',))
+    p = threading.Thread(target=playsound.playsound(sound, False))
     # playsound.playsound(sound)
-    time.sleep(random.randint(0,3))
+    
+    p.start()
+    p.join()
+    time.sleep(random.uniform(0, 3))
+    # x = 0
