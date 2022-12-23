@@ -1,8 +1,9 @@
 import os, random, time, threading
-import playsound
+import playsound, sys
 
 
-dirname = os.path.dirname(__file__)
+dirname = os.path.dirname(sys.executable)
+# dirname = os.path.dirname(__file__)
 paths = (
     "src\\\\sounds\\\\celesta\\\\",
     "src\\\\sounds\\\\clav\\\\",
@@ -11,7 +12,6 @@ paths = (
 
 def player(sound):
     playsound.playsound(sound)
-
 
 def random_set(speed_time):
     while 1:
@@ -25,7 +25,6 @@ def random_set(speed_time):
         p = threading.Thread(target=player, args=(sound, ))
         p.start()
         time.sleep(random.uniform(0, speed_time))
-
 
 speed_time = 2
 speed_time_set = input(f"Скорость (>={speed_time}, по ум. {speed_time}): ")
