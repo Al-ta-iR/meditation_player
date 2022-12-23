@@ -1,33 +1,37 @@
 import os, random, time, threading
 import playsound
-from multiprocessing import Process
 
 
 dirname = os.path.dirname(__file__)
 paths = (
-    "\\src\\sounds\\celesta\\",
-    "\\src\\sounds\\clav\\",
-    "\\src\\sounds\\swells\\",
+    "src\\\\sounds\\\\celesta\\\\",
+    "src\\\\sounds\\\\clav\\\\",
+    "src\\\\sounds\\\\swells\\\\",
 )
 
 def player(sound):
     playsound.playsound(sound)
 
-x = 1
-while x == 1:
-    instrument = random.choice(paths)
-    if 'swells' in instrument:
-        sound_item = random.randint(1,3)
-    else:
-        sound_item = random.randint(1,27)
-    sound = dirname + instrument + str(sound_item) + '.mp3'
-    print(f'► {sound}')
-    # p = Process(target=player, args=(sound,))
-    # p = Process(target=playsound.playsound(sound), args=('bob',))
-    p = threading.Thread(target=playsound.playsound(sound, False))
-    # playsound.playsound(sound)
-    
-    p.start()
-    p.join()
-    time.sleep(random.uniform(0, 3))
-    # x = 0
+
+def random_set(speed_time):
+    while 1:
+        instrument = random.choice(paths)
+        if 'swells' in instrument:
+            sound_item = random.randint(1,3)
+        else:
+            sound_item = random.randint(1,27)
+        sound = os.path.join(dirname, instrument, f'{sound_item}.mp3')
+        # print(f'► {sound}')
+        p = threading.Thread(target=player, args=(sound, ))
+        p.start()
+        time.sleep(random.uniform(0, speed_time))
+
+
+speed_time = 2
+speed_time_set = input(f"Скорость (>={speed_time}, по ум. {speed_time}): ")
+if speed_time_set != '' and speed_time_set.isdigit() and int(speed_time_set) >= 2:
+    speed_time = int(speed_time_set)
+elif speed_time_set != '':
+    speed_time = speed_time + int(speed_time_set)
+
+random_set(speed_time)
